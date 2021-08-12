@@ -1,0 +1,207 @@
+#UC1
+
+create database address_book_service;
+mysql> show databases;
++----------------------+
+| Database             |
++----------------------+
+| address_book_service |
+| information_schema   |
+| mysql                |
+| payroll_service      |
+| performance_schema   |
+| sys                  |
++----------------------+
+6 rows in set (0.04 sec)
+
+mysql> use address_book_service;
+Database changed
+
+#UC2
+
+mysql> create table address_book
+    -> (number int unsigned not null auto_increment,
+    -> First_Name varchar(50) not null,
+    -> Last_Name varchar(50) not null,
+    -> Address varchar(50) not null,
+    -> City varchar(50) not null,
+    -> State varchar(50) not null,
+    -> zip int(6) not null,
+    -> Phone_Number bigint not null,
+    -> Email varchar(50) not null,
+    -> primary key (number)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.84 sec)
+
+mysql> describe address_book;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| number       | int unsigned | NO   | PRI | NULL    | auto_increment |
+| First_Name   | varchar(50)  | NO   |     | NULL    |                |
+| Last_Name    | varchar(50)  | NO   |     | NULL    |                |
+| Address      | varchar(50)  | NO   |     | NULL    |                |
+| City         | varchar(50)  | NO   |     | NULL    |                |
+| State        | varchar(50)  | NO   |     | NULL    |                |
+| zip          | int          | NO   |     | NULL    |                |
+| Phone_Number | bigint       | NO   |     | NULL    |                |
+| Email        | varchar(50)  | NO   |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+9 rows in set (0.19 sec)
+
+#UC3
+
+mysql> insert into address_book (First_Name,Last_name, address, city,state,zip,phone_number,email) values
+    -> ('Shradha', 'Nambiar', 'Smrithi', 'Kannur','Kerala', '670562', '9567552477', 'sradha@gmail.com'),
+    -> ('Deepti', 'Nambiar', 'Nile','Kannur','Kerala', '670562', '8576633579', 'deepti@gmail.com'),
+    -> ('Priya', 'Shetty', 'xyz', 'Bangalore','Karnataka', 562100, 9865328899, 'pri@gmail.com');
+Query OK, 3 rows affected (0.38 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from address_book;
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+| number | First_Name | Last_Name | Address | City      | State     | zip    | Phone_Number | Email            |
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+|      1 | Shradha    | Nambiar   | Smrithi | Kannur    | Kerala    | 670562 |   9567552477 | sradha@gmail.com |
+|      2 | Deepti     | Nambiar   | Nile    | Kannur    | Kerala    | 670562 |   8576633579 | deepti@gmail.com |
+|      3 | Priya      | Shetty    | xyz     | Bangalore | Karnataka | 562100 |   9865328899 | pri@gmail.com    |
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+3 rows in set (0.00 sec)
+
+#UC4
+
+mysql> update address_book set address = 'abc' where First_name = 'Shradha';
+Query OK, 1 row affected (0.29 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from address_book;
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+| number | First_Name | Last_Name | Address | City      | State     | zip    | Phone_Number | Email            |
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+|      1 | Shradha    | Nambiar   | abc     | Kannur    | Kerala    | 670562 |   9567552477 | sradha@gmail.com |
+|      2 | Deepti     | Nambiar   | Nile    | Kannur    | Kerala    | 670562 |   8576633579 | deepti@gmail.com |
+|      3 | Priya      | Shetty    | xyz     | Bangalore | Karnataka | 562100 |   9865328899 | pri@gmail.com    |
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+3 rows in set (0.08 sec)
+
+#UC5
+
+mysql> delete from address_book where first_name = 'Shradha'
+    -> ;
+Query OK, 1 row affected (0.44 sec)
+
+mysql> select * from address_book;
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+| number | First_Name | Last_Name | Address | City      | State     | zip    | Phone_Number | Email            |
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+|      2 | Deepti     | Nambiar   | Nile    | Kannur    | Kerala    | 670562 |   8576633579 | deepti@gmail.com |
+|      3 | Priya      | Shetty    | xyz     | Bangalore | Karnataka | 562100 |   9865328899 | pri@gmail.com    |
++--------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+2 rows in set (0.07 sec)
+
+#UC6
+
+mysql> select * from address_book where city = 'Kannur' or state = 'Kerala';
++--------+------------+-----------+---------+--------+--------+--------+--------------+------------------+
+| number | First_Name | Last_Name | Address | City   | State  | zip    | Phone_Number | Email            |
++--------+------------+-----------+---------+--------+--------+--------+--------------+------------------+
+|      2 | Deepti     | Nambiar   | Nile    | Kannur | Kerala | 670562 |   8576633579 | deepti@gmail.com |
++--------+------------+-----------+---------+--------+--------+--------+--------------+------------------+
+1 row in set (0.00 sec)
+
+#UC7
+
+mysql> select first_name, city, state, count(first_name) from address_book group by state;
++------------+-----------+-----------+-------------------+
+| first_name | city      | state     | count(first_name) |
++------------+-----------+-----------+-------------------+
+| Deepti     | Kannur    | Kerala    |                 1 |
+| Priya      | Bangalore | Karnataka |                 1 |
++------------+-----------+-----------+-------------------+
+2 rows in set (0.00 sec)
+
+#UC8
+
+mysql> select * from address_book where city = 'kannur' order by first_name;
++--------+------------+-----------+---------+--------+--------+--------+--------------+------------------+
+| number | First_Name | Last_Name | Address | City   | State  | zip    | Phone_Number | Email            |
++--------+------------+-----------+---------+--------+--------+--------+--------------+------------------+
+|      2 | Deepti     | Nambiar   | Nile    | Kannur | Kerala | 670562 |   8576633579 | deepti@gmail.com |
+|      4 | Shradha    | Nambiar   | Abc     | Kannur | Kerala | 670562 |   9567552777 | sradha@gmail.com |
++--------+------------+-----------+---------+--------+--------+--------+--------------+------------------+
+2 rows in set (0.01 sec)
+
+#UC9
+
+mysql> Alter table address_book add Type varchar(15) after number;
+Query OK, 0 rows affected (3.39 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from address_book
+    -> ;
++--------+------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+| number | Type | First_Name | Last_Name | Address | City      | State     | zip    | Phone_Number | Email            |
++--------+------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+|      2 | NULL | Deepti     | Nambiar   | Nile    | Kannur    | Kerala    | 670562 |   8576633579 | deepti@gmail.com |
+|      3 | NULL | Priya      | Shetty    | xyz     | Bangalore | Karnataka | 562100 |   9865328899 | pri@gmail.com    |
+|      4 | NULL | Shradha    | Nambiar   | Abc     | Kannur    | Kerala    | 670562 |   9567552777 | sradha@gmail.com |
++--------+------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> update address_book set Type = 'Family' where First_Name = 'Deepti';
+Query OK, 1 row affected (0.14 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update address_book set Type = 'Friends' where First_Name = 'Priya';
+Query OK, 1 row affected (0.18 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update address_book set Type = 'Family' where First_Name = 'Shradha';
+Query OK, 1 row affected (0.16 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from address_book
+    -> ;
++--------+---------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+| number | Type    | First_Name | Last_Name | Address | City      | State     | zip    | Phone_Number | Email            |
++--------+---------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+|      2 | Family  | Deepti     | Nambiar   | Nile    | Kannur    | Kerala    | 670562 |   8576633579 | deepti@gmail.com |
+|      3 | Friends | Priya      | Shetty    | xyz     | Bangalore | Karnataka | 562100 |   9865328899 | pri@gmail.com    |
+|      4 | Family  | Shradha    | Nambiar   | Abc     | Kannur    | Kerala    | 670562 |   9567552777 | sradha@gmail.com |
++--------+---------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+3 rows in set (0.00 sec)
+
+#UC10
+
+mysql> select type, count(type) from address_book group by type;
++---------+-------------+
+| type    | count(type) |
++---------+-------------+
+| Family  |           2 |
+| Friends |           1 |
++---------+-------------+
+2 rows in set (0.00 sec)
+
+
+#UC11
+
+mysql> insert into address_book(type,first_name,last_name,address,city,state,zip,phone_number,email) values (Family, Rohan, Nambiar, Akua, Kannur, Kerala, 670563, 9988776532, rakuu@gmail.com);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@gmail.com)' at line 1
+mysql> insert into address_book(type,first_name,last_name,address,city,state,zip,phone_number,email) values ('Family', 'Rohan', 'Nambiar', 'Akua', 'Kannur', 'Kerala', 670563, 9988776532, 'rakuu@gmail.com');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into address_book(type,first_name,last_name,address,city,state,zip,phone_number,email) values ('Friends', 'Shreya', 'Nayar', 'AAA', 'Kochi', 'Kerala', 670773, 9988775232, 'sn56@gmail.com');
+Query OK, 1 row affected (0.20 sec)
+
+mysql> select * from address_book;
++--------+---------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+| number | Type    | First_Name | Last_Name | Address | City      | State     | zip    | Phone_Number | Email            |
++--------+---------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+|      2 | Family  | Deepti     | Nambiar   | Nile    | Kannur    | Kerala    | 670562 |   8576633579 | deepti@gmail.com |
+|      3 | Friends | Priya      | Shetty    | xyz     | Bangalore | Karnataka | 562100 |   9865328899 | pri@gmail.com    |
+|      4 | Family  | Shradha    | Nambiar   | Abc     | Kannur    | Kerala    | 670562 |   9567552777 | sradha@gmail.com |
+|      5 | Family  | Rohan      | Nambiar   | Akua    | Kannur    | Kerala    | 670563 |   9988776532 | rakuu@gmail.com  |
+|      6 | Friends | Shreya     | Nayar     | AAA     | Kochi     | Kerala    | 670773 |   9988775232 | sn56@gmail.com   |
++--------+---------+------------+-----------+---------+-----------+-----------+--------+--------------+------------------+
+5 rows in set (0.00 sec)
+
