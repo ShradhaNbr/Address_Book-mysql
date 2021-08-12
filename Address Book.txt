@@ -185,8 +185,7 @@ mysql> select type, count(type) from address_book group by type;
 
 #UC11
 
-mysql> insert into address_book(type,first_name,last_name,address,city,state,zip,phone_number,email) values (Family, Rohan, Nambiar, Akua, Kannur, Kerala, 670563, 9988776532, rakuu@gmail.com);
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@gmail.com)' at line 1
+
 mysql> insert into address_book(type,first_name,last_name,address,city,state,zip,phone_number,email) values ('Family', 'Rohan', 'Nambiar', 'Akua', 'Kannur', 'Kerala', 670563, 9988776532, 'rakuu@gmail.com');
 Query OK, 1 row affected (0.14 sec)
 
